@@ -11,9 +11,10 @@ def predict_rub_salary(salary_from, salary_to, salary_currency):
     if salary_from and salary_to:
         return (salary_from + salary_to) / 2
     if salary_from:
-        return (salary_from) * 1.2
+        return salary_from * 1.2
     if salary_to:
-        return (salary_to) * 0.8
+        return salary_to * 0.8
+
 
 def get_vacancies(language):
     salaries = []
@@ -30,7 +31,8 @@ def get_vacancies(language):
         for vacancie in vacancies:
             if not vacancie["salary"]:
                 continue
-            predicted_salary = predict_rub_salary(vacancie["salary"]["from"], vacancie["salary"]["to"], vacancie["salary"]["currency"])
+            predicted_salary = predict_rub_salary(vacancie["salary"]["from"], vacancie["salary"]["to"],
+                                                  vacancie["salary"]["currency"])
             if predicted_salary:
                 salaries.append(predicted_salary)
         page += 1
@@ -41,6 +43,8 @@ def get_vacancies(language):
         "vacancies_processed": vacancies_processed,
         "average_salary": average_salary
     }
+
+
 def get_vacancies_superjob(superj_token, language):
     salaries = []
     payload = {"town": "Москва", "keyword": language}
@@ -50,9 +54,7 @@ def get_vacancies_superjob(superj_token, language):
     }
     response = requests.get(url, params=payload, headers=headers)
     response.raise_for_status()
-    #pprint(response.json()["objects"])
     for vacancie in response.json()["objects"]:
-        #pprint(vacancie)
         salary_from = vacancie["payment_from"]
         salary_to = vacancie["payment_to"]
         salary_currency = vacancie["currency"]
@@ -92,6 +94,5 @@ if __name__ == "__main__":
     for language in languages:
         language_params_sj[language] = get_vacancies_superjob(superj_token, language)
         language_params_hh[language] = get_vacancies(language)
-    #pprint(language_params_sj)
-    make_table(language_params_sj, title = "SuperJob Moscow")
-    make_table(language_params_hh, title = "HeadHunter Moscow")
+    make_table(language_params_sj, title="SuperJob Moscow")
+    make_table(language_params_hh, title="HeadHunter Moscow")
