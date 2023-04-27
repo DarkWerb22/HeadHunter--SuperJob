@@ -1,8 +1,8 @@
+import os
+
 import requests
-from pprint import pprint
 from dotenv import load_dotenv
 from terminaltables import AsciiTable
-import os
 
 
 def predict_rub_salary(salary_from, salary_to, salary_currency):
