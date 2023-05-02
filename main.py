@@ -25,8 +25,9 @@ def get_vacancies(language):
         payload = {"area": 1, "text": language, "page": page}
         response = requests.get(url, params=payload)
         response.raise_for_status()
-        pages_number = response.json()["pages"]
-        vacancies = (response.json()["items"])
+        response_content = response.json()
+        pages_number = response_content["pages"]
+        vacancies = (response_content["items"])
         print(page)
         for vacancie in vacancies:
             if not vacancie["salary"]:
@@ -39,7 +40,7 @@ def get_vacancies(language):
     vacancies_processed = len(salaries)
     average_salary = sum(salaries) // vacancies_processed
     return {
-        "vacancies_found": response.json()["found"],
+        "vacancies_found": response_content["found"],
         "vacancies_processed": vacancies_processed,
         "average_salary": average_salary
     }
@@ -54,7 +55,8 @@ def get_vacancies_superjob(superj_token, language):
     }
     response = requests.get(url, params=payload, headers=headers)
     response.raise_for_status()
-    for vacancie in response.json()["objects"]:
+    response_content = response.json
+    for vacancie in response_content["objects"]:
         salary_from = vacancie["payment_from"]
         salary_to = vacancie["payment_to"]
         salary_currency = vacancie["currency"]
@@ -67,7 +69,7 @@ def get_vacancies_superjob(superj_token, language):
     else:
         average_salary = 0
     return {
-        "vacancies_found": response.json()["total"],
+        "vacancies_found": response_content["total"],
         "vacancies_processed": vacancies_processed,
         "average_salary": average_salary
     }
