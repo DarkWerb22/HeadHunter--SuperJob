@@ -58,7 +58,6 @@ def get_vacancies_superjob(superj_token, language):
         salary_from = vacancie["payment_from"]
         salary_to = vacancie["payment_to"]
         salary_currency = vacancie["currency"]
-        predict_rub_salary(salary_from, salary_to, salary_currency)
         predicted_salary = predict_rub_salary(salary_from, salary_to, salary_currency)
         if predicted_salary:
             salaries.append(predicted_salary)
