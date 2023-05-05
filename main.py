@@ -48,21 +48,27 @@ def get_vacancies(language):
 
 def get_vacancies_superjob(superj_token, language):
     salaries = []
-    payload = {"town": "Москва", "keyword": language}
     url = "https://api.superjob.ru/2.0/vacancies/"
     headers = {
         "X-Api-App-Id": superj_token
     }
-    response = requests.get(url, params=payload, headers=headers)
-    response.raise_for_status()
-    response_content = response.json
-    for vacancie in response_content["objects"]:
-        salary_from = vacancie["payment_from"]
-        salary_to = vacancie["payment_to"]
-        salary_currency = vacancie["currency"]
-        predicted_salary = predict_rub_salary(salary_from, salary_to, salary_currency)
-        if predicted_salary:
-            salaries.append(predicted_salary)
+    page = 1
+    while True:
+        payload = {"town": "Москва", "keyword": language, "page": page}
+        response = requests.get(url, params=payload, headers=headers)
+        response.raise_for_status()
+        response_content = response.json()
+        for vacancie in response_content["objects"]:
+            salary_from = vacancie["payment_from"]
+            salary_to = vacancie["payment_to"]
+            salary_currency = vacancie["currency"]
+            predicted_salary = predict_rub_salary(salary_from, salary_to, salary_currency)
+            if predicted_salary:
+                salaries.append(predicted_salary)
+        if not response_content["more"]:
+            break
+        else:
+            page += 1
     vacancies_processed = len(salaries)
     if vacancies_processed:
         average_salary = sum(salaries) // vacancies_processed
@@ -94,6 +100,6 @@ if __name__ == "__main__":
     language_params_sj = {}
     for language in languages:
         language_params_sj[language] = get_vacancies_superjob(superj_token, language)
-        language_params_hh[language] = get_vacancies(language)
+        #language_params_hh[language] = get_vacancies(language)
     make_table(language_params_sj, title="SuperJob Moscow")
     make_table(language_params_hh, title="HeadHunter Moscow")
