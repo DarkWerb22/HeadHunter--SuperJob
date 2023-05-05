@@ -16,13 +16,14 @@ def predict_rub_salary(salary_from, salary_to, salary_currency):
         return salary_to * 0.8
 
 
-def get_vacancies(language):
+def get_vacancies_statiscics_hh(language):
     salaries = []
     url = "https://api.hh.ru/vacancies"
     page = 0
     pages_number = 1
     while page < pages_number:
-        payload = {"area": 1, "text": language, "page": page}
+        area_id = 1
+        payload = {"area": area_id, "text": language, "page": page}
         response = requests.get(url, params=payload)
         response.raise_for_status()
         response_content = response.json()
@@ -47,6 +48,7 @@ def get_vacancies(language):
 
 
 def get_vacancies_superjob(superj_token, language):
+def get_vacancies_statistics_sj(superj_token, language):
     salaries = []
     url = "https://api.superjob.ru/2.0/vacancies/"
     headers = {
@@ -99,7 +101,7 @@ if __name__ == "__main__":
     language_params_hh = {}
     language_params_sj = {}
     for language in languages:
-        language_params_sj[language] = get_vacancies_superjob(superj_token, language)
-        #language_params_hh[language] = get_vacancies(language)
+        language_params_sj[language] = get_vacancies_statistics_sj(superj_token, language)
+        language_params_hh[language] = get_vacancies_statiscics_hh(language)
     make_table(language_params_sj, title="SuperJob Moscow")
     make_table(language_params_hh, title="HeadHunter Moscow")
