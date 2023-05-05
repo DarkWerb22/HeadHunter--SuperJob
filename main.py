@@ -29,7 +29,6 @@ def get_vacancies_statiscics_hh(language):
         response_content = response.json()
         pages_number = response_content["pages"]
         vacancies = (response_content["items"])
-        print(page)
         for vacancie in vacancies:
             if not vacancie["salary"]:
                 continue
@@ -47,7 +46,6 @@ def get_vacancies_statiscics_hh(language):
     }
 
 
-def get_vacancies_superjob(superj_token, language):
 def get_vacancies_statistics_sj(superj_token, language):
     salaries = []
     url = "https://api.superjob.ru/2.0/vacancies/"
@@ -102,6 +100,6 @@ if __name__ == "__main__":
     language_params_sj = {}
     for language in languages:
         language_params_sj[language] = get_vacancies_statistics_sj(superj_token, language)
-        language_params_hh[language] = get_vacancies_statiscics_hh(language)
+        #language_params_hh[language] = get_vacancies_statiscics_hh(language)
     make_table(language_params_sj, title="SuperJob Moscow")
     make_table(language_params_hh, title="HeadHunter Moscow")
