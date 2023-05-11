@@ -82,13 +82,13 @@ def get_vacancies_statistics_sj(superj_token, language):
 
 
 def make_table(language_params, title):
-    table_data = [
+    table_payload = [
         ['языки програмирования', 'Вакансий найдено', 'Вакансий обработано', 'Средняя заркплата'],
 ]
 
     for language, params in language_params.items():
-        table_data.append([language, params["vacancies_found"], params["vacancies_processed"], params["average_salary"]])
-    table = AsciiTable(table_data, title)
+        table_payload.append([language, params["vacancies_found"], params["vacancies_processed"], params["average_salary"]])
+    table = AsciiTable(table_payload, title)
     return table.table
 
 
