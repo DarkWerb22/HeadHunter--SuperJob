@@ -28,12 +28,12 @@ def get_vacancies_statiscics_hh(language):
         response.raise_for_status()
         response_content = response.json()
         pages_number = response_content["pages"]
-        vacancies = (response_content["items"])
-        for vacancie in vacancies:
-            if not vacancie["salary"]:
+        vacancies = response_content["items"]
+        for vacancy in vacancies:
+            if not vacancy["salary"]:
                 continue
-            predicted_salary = predict_rub_salary(vacancie["salary"]["from"], vacancie["salary"]["to"],
-                                                  vacancie["salary"]["currency"])
+            predicted_salary = predict_rub_salary(vacancy["salary"]["from"], vacancy["salary"]["to"],
+                                                  vacancy["salary"]["currency"])
             if predicted_salary:
                 salaries.append(predicted_salary)
         page += 1
