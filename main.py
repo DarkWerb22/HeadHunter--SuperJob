@@ -89,7 +89,7 @@ def make_table(language_params, title):
     for language, params in language_params.items():
         table_data.append([language, params["vacancies_found"], params["vacancies_processed"], params["average_salary"]])
     table = AsciiTable(table_data, title)
-    print(table.table)
+    return table.table
 
 
 if __name__ == "__main__":
@@ -101,5 +101,5 @@ if __name__ == "__main__":
     for language in languages:
         language_params_sj[language] = get_vacancies_statistics_sj(superj_token, language)
         #language_params_hh[language] = get_vacancies_statiscics_hh(language)
-    make_table(language_params_sj, title="SuperJob Moscow")
-    make_table(language_params_hh, title="HeadHunter Moscow")
+    print(make_table(language_params_sj, title="SuperJob Moscow"))
+    print(make_table(language_params_hh, title="HeadHunter Moscow"))
