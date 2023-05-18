@@ -38,7 +38,10 @@ def get_vacancies_statiscics_hh(language):
                 salaries.append(predicted_salary)
         page += 1
     vacancies_processed = len(salaries)
-    average_salary = sum(salaries) // vacancies_processed
+    if vacancies_processed:
+        average_salary = sum(salaries) // vacancies_processed
+    else:
+        average_salary = 0
     return {
         "vacancies_found": response_content["found"],
         "vacancies_processed": vacancies_processed,
